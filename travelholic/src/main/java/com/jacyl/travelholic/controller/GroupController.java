@@ -27,27 +27,27 @@ class GroupController {
         this.groupRepository = groupRepository;
     }
 
-    @GetMapping("/groups")
-    Collection<Group> groups() {
+    @GetMapping("/group/findAll")
+    Collection<Group> findAll() {
         return groupRepository.findAll();
     }
 
-    @GetMapping("/group/{id}")
-    ResponseEntity<?> getGroup(@PathVariable String id) {
+    @GetMapping("/group/get?id={id}")
+    ResponseEntity<?> get(@PathVariable String id) {
         Optional<Group> group = groupRepository.findById(id);
         return group.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/group")
-    ResponseEntity<Group> createGroup(@Valid @RequestBody Group group) throws URISyntaxException {
-        log.info("Request to create group: {}", group);
+    @PostMapping("/group/add")
+    ResponseEntity<Group> addGroup(@Valid @RequestBody Group group) throws URISyntaxException {
+        log.info("Request to add group: {}", group);
         Group result = groupRepository.save(group);
-        return ResponseEntity.created(new URI("/api/group/" + result.getId()))
+        return ResponseEntity.created(new URI("/api/get?id=" + result.getId()))
                 .body(result);
     }
 
-    @PutMapping("/group/{id}")
+    @PutMapping("/group/update?id={id}")
     ResponseEntity<Group> updateGroup(@PathVariable String id, @Valid @RequestBody Group group) {
         group.setId(id);
         log.info("Request to update group: {}", group);
@@ -55,7 +55,7 @@ class GroupController {
         return ResponseEntity.ok().body(result);
     }
 
-    @DeleteMapping("/group/{id}")
+    @DeleteMapping("/group/delete?id={id}")
     public ResponseEntity<?> deleteGroup(@PathVariable String id) {
         log.info("Request to delete group: {}", id);
         groupRepository.deleteById(id);

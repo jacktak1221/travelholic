@@ -1,8 +1,6 @@
 import React from 'react';
-import {Button} from 'react-bootstrap';
-import Modal from 'react-modal';
+import {Button, Col, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstrap';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
 
 var querystring = require('querystring');
 
@@ -10,176 +8,82 @@ class Add extends React.Component {
     constructor() {
         super();
         this.state = {
-            id: '',
-            name: '',
-            city: '',
-            country: '',
-            modalIsOpen: false
+            item: {}
         }
-        this.handleSelectChange = this.handleSelectChange.bind(this);
-        this.onClick = this.onClick.bind(this);
-        this.handleTextChange = this.handleTextChange.bind(this);
-        this.insertNewGroup = this.insertNewGroup.bind(this);
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-    }
 
-    openModal() {
-        this.setState({
-            modalIsOpen: true
-        });
-    }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
 
-    closeModal() {
-        this.setState({
-            modalIsOpen: false,
-            // description: '',
-            // amount: '',
-            // month: 'Jan',
-            // year: 2016,
-            messageFromServer: ''
-        });
     }
 
     componentDidMount() {
-        // if(this.props.selectedMonth == 'All'){
-        //     this.setState({
-        //         month: 'Jan'
-        //     });
-        // }else{
-        //     this.setState({
-        //         month: this.props.selectedMonth
-        //     });
-        // }
-        // this.setState({
-        //     year: this.props.selectedYear
-        // });
     }
 
     componentWillReceiveProps(nextProps) {
-        // if(this.props.selectedMonth == 'All'){
-        //     this.setState({
-        //         month: 'Jan'
-        //     });
-        // }else{
-        //     this.setState({
-        //         month: this.props.selectedMonth
-        //     });
-        // }
-        // this.setState({
-        //     year:nextProps.selectedYear
-        // })
     }
 
-    handleSelectChange(e) {
-        // if (e.target.name == 'month') {
-        //     this.setState({
-        //         month: e.target.value
-        //     });
-        // }
-        // if (e.target.name == 'year') {
-        //     this.setState({
-        //         year: e.target.value
-        //     });
-        // }
+    handleChange(e) {
+        const target = e.target;
+        const value = target.value;
+        const name = target.name;
+        let item = {...this.state.item};
+        item[name] = value;
+        this.setState({item});
+
+        console.log(this.state);
     }
 
-    onClick(e) {
-        this.insertNewGroup(this);
-    }
 
-    insertNewGroup(e) {
-        var group = {
-            id: e.state.id,
-            name: e.state.name,
-            city: e.state.city,
-            country: e.state.country
-        }
-        axios.post('http://localhost:8080/api/groups', group).then(function (response) {
-            e.setState({
-                messageFromServer: response.data
-            });
+    handleSubmit(e) {
+        e.preventDefault();
+
+        const {item} = this.state;
+
+        console.log(this.state);
+
+        axios.post('http://localhost:8080/api/group/add', item).then(function (response) {
+            // e.setState({
+            //     messageFromServer: response.data
+            // });
         });
     }
 
-    handleTextChange(e) {
-        // if (e.target.name == "description") {
-        //     this.setState({
-        //         description: e.target.value
-        //     });
-        // }
-        // if (e.target.name == "amount") {
-        //     this.setState({
-        //         amount: e.target.value
-        //     });
-        // }
-    }
 
     render() {
-        if (this.state.messageFromServer == '') {
-            return (
-                <div>
-                    <Button bsStyle="success" bsSize="small" onClick={this.openModal}>
-                        <span className="glyphicon glyphicon-plus"></span>
-                    </Button>
-                    <Modal
-                        isOpen={this.state.modalIsOpen}
-                        onRequestClose={this.closeModal}
-                        contentLabel="Add Group"
-                        className="Modal">
-                        <Link to={{pathname: '/api/groups', search: ''}}
-                              style={{textDecoration: 'none'}}>
-                            <Button bsStyle="danger" bsSize="xsmall" onClick={this.closeModal}>
-                                <span className="closebtn glyphicon glyphicon-remove"></span>
-                            </Button>
-                        </Link>
-                        <br/>
-                        <fieldset>
-                            <label for="country">Month:</label>
-                            <select id="country" name="country" value={this.state.country} onChange={this.handleSelectChange}>
-                                <option value="Ireland" id="Ireland">Ireland</option>
-                                <option value="Finland" id="Finland">Finland</option>
-                                <option value="China" id="China">China</option>
-                            </select>
-                            <label for="city">City:</label>
-                            <select id="city" name="city" value={this.state.city}
-                                    onChange={this.handleSelectChange}>
-                                <option value="Hong Kong" id="HongKong">Hong Kong</option>
-                                <option value="Shanghai" id="Shanghai">Shanghai</option>
-                            </select>
-                        </fieldset>
-                        <div className='button-center'>
-                            <br/>
-                            <Button bsStyle="success" bsSize="small" onClick={this.onClick}>Add New Group</Button>
-                        </div>
-                    </Modal>
-                </div>
-            )
-        }
-        else {
-            return (
-                <div>
-                    <Button bsStyle="success" bsSize="small" onClick={this.openModal}>
-                        <span className="glyphicon glyphicon-plus"></span>
-                    </Button>
-                    <Modal
-                        isOpen={this.state.modalIsOpen}
-                        onAfterOpen={this.afterOpenModal}
-                        onRequestClose={this.closeModal}
-                        contentLabel="Add Group"
-                        className="Modal">
-                        <div className='button-center'>
-                            <h3>{this.state.messageFromServer}</h3>
-                            <Link
-                                to={{pathname: '/api/groups', search: ''}}
-                                style={{textDecoration: 'none'}}>
-                                <Button bsStyle="success" bsSize="xsmall" onClick={this.closeModal}>Close the Dialog</Button>
-                            </Link>
-                        </div>
-                    </Modal>
-                </div>
-            )
-        }
+        return (
+            <div>
+                <Form onSubmit={this.handleSubmit} horizontal>
+                    <FormGroup controlId="formHorizontalEmail">
+                        <Col componentClass={ControlLabel} sm={2}>
+                            Name
+                        </Col>
+                        <Col sm={10}>
+                            <FormControl type="text" name="name" placeholder="Enter Name" onChange={this.handleChange}/>
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup controlId="formHorizontalEmail">
+                        <Col componentClass={ControlLabel} sm={2}>
+                            City
+                        </Col>
+                        <Col sm={10}>
+                            <FormControl type="text" name="city" placeholder="Enter City" onChange={this.handleChange}/>
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup controlId="formHorizontalEmail">
+                        <Col componentClass={ControlLabel} sm={2}>
+                            Country
+                        </Col>
+                        <Col sm={10}>
+                            <FormControl type="text" name="country" placeholder="Country" onChange={this.handleChange}/>
+                        </Col>
+                    </FormGroup>
+
+                    <Button type="submit">Submit</Button>
+                </Form>
+            </div>
+        )
     }
 }
 
