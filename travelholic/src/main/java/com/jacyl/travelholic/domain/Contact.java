@@ -1,22 +1,22 @@
 package com.jacyl.travelholic.domain;
 
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Set;
 
-@Data
-@NoArgsConstructor
-@RequiredArgsConstructor
+//@Data
+//@NoArgsConstructor
+//@RequiredArgsConstructor
 //@Entity
 //@Table(name = "user_group")
 @Document
-public class Group {
+@Getter
+@Setter
+@Builder(toBuilder = true)
+public class Contact {
 
     @Id
     private String id;

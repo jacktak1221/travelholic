@@ -1,0 +1,48 @@
+{
+  "name": "app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.2",
+    "axios": "^0.18.0",
+    "bootstrap": "^4.3.1",
+    "classnames": "^2.2.6",
+    "history": "^4.9.0",
+    "npm": "^6.9.0",
+    "npm-watch": "^0.4.0",
+    "react": "^16.8.4",
+    "react-autosuggest": "^9.4.3",
+    "react-bootstrap": "^1.0.0-beta.5",
+    "react-datepicker": "^2.2.0",
+    "react-dom": "^16.8.4",
+    "react-modal": "^3.8.1",
+    "react-moment": "^0.8.4",
+    "react-notification-alert": "0.0.8",
+    "react-router-dom": "^4.4.0",
+    "react-scripts": "2.0.5",
+    "react-select": "^2.4.2",
+    "react-sticky": "^6.0.3",
+    "reactstrap": "^6.5.0"
+  },
+  "scripts": {
+    "start": "app/node_modules/.bin/react-scripts start",
+    "build": "app/node_modules/.bin/react-scripts build",
+    "test": "app/node_modules/.bin/react-scripts test",
+    "eject": "app/node_modules/.bin/react-scripts eject",
+    "watch": "app/node_modules/.bin/npm-watch"
+  },
+  "watch": {
+    "build": "src/"
+  },
+  "proxy": "http://localhost:8080",
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
